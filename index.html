@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IEEE UI/UX Design Workshop</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI",Arial,sans-serif;
+}
+
+html{scroll-behavior:smooth;}
+
+body{
+  background:#020617;
+  color:white;
+  overflow-x:hidden;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:-25%;
+  background:
+    radial-gradient(circle at 20% 20%,rgba(0,180,255,.38),transparent 28%),
+    radial-gradient(circle at 80% 30%,rgba(124,58,237,.38),transparent 30%),
+    radial-gradient(circle at 50% 80%,rgba(14,165,233,.25),transparent 35%);
+  filter:blur(90px);
+  animation:aurora 18s ease-in-out infinite alternate;
+  z-index:-4;
+}
+
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.13) 1px,transparent 1px);
+  background-size:55px 55px;
+  opacity:.18;
+  animation:dotsMove 20s linear infinite;
+  z-index:-3;
+}
+
+@keyframes aurora{
+  0%{transform:translate(-8%,-5%) rotate(0deg);}
+  100%{transform:translate(8%,5%) rotate(180deg);}
+}
+
+@keyframes dotsMove{
+  from{background-position:0 0;}
+  to{background-position:120px 120px;}
+}
+
+.loader{
+  position:fixed;
+  inset:0;
+  background:#020617;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:99999;
+  animation:loaderHide 1s forwards;
+  animation-delay:1.3s;
+}
+
+.loader h1{
+  color:#38bdf8;
+  font-size:42px;
+  text-shadow:0 0 35px #38bdf8;
+  animation:pulse 1s infinite alternate;
+}
+
+@keyframes loaderHide{
+  to{opacity:0;visibility:hidden;}
+}
+
+@keyframes pulse{
+  to{transform:scale(1.08);}
+}
+
+.progress{
+  position:fixed;
+  top:0;
+  left:0;
+  height:4px;
+  width:0;
+  background:#38bdf8;
+  z-index:9999;
+  box-shadow:0 0 20px #38bdf8;
+}
+
+.sparkles{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:6;
+  overflow:hidden;
+}
+
+.sparkles span{
+  position:absolute;
+  width:4px;
+  height:4px;
+  background:#38bdf8;
+  border-radius:50%;
+  box-shadow:0 0 12px #38bdf8,0 0 24px #38bdf8;
+  animation:sparkleMove 6s linear infinite;
+}
+
+@keyframes sparkleMove{
+  0%{transform:translateY(100vh) scale(.3);opacity:0;}
+  15%{opacity:1;}
+  100%{transform:translateY(-10vh) scale(1);opacity:0;}
+}
+
+.spotlight{
+  position:fixed;
+  width:460px;
+  height:460px;
+  border-radius:50%;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(255,255,255,.12),transparent 65%);
+  mix-blend-mode:screen;
+  z-index:999;
+}
+
+.shape{
+  position:fixed;
+  border-radius:50%;
+  filter:blur(80px);
+  opacity:.34;
+  pointer-events:none;
+  z-index:-1;
+  animation:floatShape 12s infinite alternate ease-in-out;
+}
+
+.s1{width:250px;height:250px;background:#00b4ff;top:10%;left:5%;}
+.s2{width:320px;height:320px;background:#7c3aed;bottom:8%;right:5%;animation-delay:3s;}
+.s3{width:220px;height:220px;background:#06b6d4;top:55%;left:42%;animation-delay:5s;}
+.s4{width:170px;height:170px;background:#3b82f6;top:20%;right:25%;animation-delay:8s;}
+
+@keyframes floatShape{
+  0%{transform:translateY(0) translateX(0);}
+  100%{transform:translateY(-90px) translateX(60px);}
+}
+
+nav{
+  position:fixed;
+  width:100%;
+  top:0;
+  left:0;
+  z-index:9000;
+  padding:16px 8%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:rgba(2,6,23,.72);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.12);
+  overflow:hidden;
+}
+
+nav::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:100%;
+  height:2px;
+  background:linear-gradient(90deg,transparent,#38bdf8,transparent);
+  animation:navGlow 3s linear infinite;
+}
+
+@keyframes navGlow{
+  from{transform:translateX(-100%);}
+  to{transform:translateX(100%);}
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  z-index:2;
+}
+
+.logo img{
+  width:72px;
+  background:white;
+  padding:5px;
+  border-radius:8px;
+}
+
+.logo span{
+  font-weight:800;
+  color:#e0f2fe;
+}
+
+nav ul{
+  list-style:none;
+  display:flex;
+  gap:24px;
+  z-index:2;
+}
+
+nav a{
+  color:#e5e7eb;
+  text-decoration:none;
+  font-weight:600;
+  transition:.3s;
+}
+
+nav a:hover{
+  color:#38bdf8;
+  text-shadow:0 0 18px #38bdf8;
+}
+
+.menu{
+  display:none;
+  background:none;
+  border:0;
+  color:white;
+  font-size:30px;
+  cursor:pointer;
+  z-index:2;
+}
+
+.hero{
+  min-height:100vh;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  padding:140px 8% 90px;
+}
+
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:url("https://img.magnific.com/free-vector/gradient-ui-ux-elements-background_23-2149056159.jpg?semt=ais_hybrid&w=1200") center/cover no-repeat;
+  transform:translateX(-100%) scale(1.08);
+  animation:imageSlide 2.2s ease forwards, bgFloat 10s ease-in-out infinite alternate 2.2s;
+  z-index:0;
+}
+
+@keyframes imageSlide{
+  from{transform:translateX(-100%) scale(1.08);}
+  to{transform:translateX(0) scale(1.08);}
+}
+
+@keyframes bgFloat{
+  from{transform:translateX(-45px) scale(1.12);}
+  to{transform:translateX(45px) scale(1.18);}
+}
+
+.hero-dark{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,rgba(2,6,23,.92),rgba(2,6,23,.64),rgba(2,6,23,.82));
+  z-index:1;
+}
+
+.torch-light{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  background:radial-gradient(
+    circle 220px at var(--x,50%) var(--y,50%),
+    rgba(255,255,255,.25) 0%,
+    rgba(0,180,255,.28) 28%,
+    rgba(0,0,0,0) 48%,
+    rgba(0,0,0,.58) 84%
+  );
+  mix-blend-mode:screen;
+}
+
+.blob{
+  position:absolute;
+  width:300px;
+  height:300px;
+  border-radius:50%;
+  filter:blur(80px);
+  opacity:.55;
+  z-index:2;
+}
+
+.blob1{
+  background:#00b4ff;
+  top:18%;
+  right:10%;
+  animation:blobMove 7s infinite alternate;
+}
+
+.blob2{
+  background:#7c3aed;
+  bottom:10%;
+  left:8%;
+  animation:blobMove 9s infinite alternate-reverse;
+}
+
+@keyframes blobMove{
+  from{transform:translateY(0);}
+  to{transform:translateY(-70px);}
+}
+
+.hero-content{
+  position:relative;
+  z-index:3;
+  max-width:780px;
+  padding:42px;
+  border-radius:34px;
+  background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.05));
+  border:1px solid rgba(255,255,255,.22);
+  backdrop-filter:blur(18px);
+  box-shadow:0 25px 80px rgba(0,0,0,.35);
+  animation:heroText 1.4s ease forwards;
+}
+
+@keyframes heroText{
+  from{transform:translateY(60px);opacity:0;}
+  to{transform:translateY(0);opacity:1;}
+}
+
+.badge{
+  display:inline-block;
+  padding:10px 18px;
+  border-radius:30px;
+  background:rgba(56,189,248,.13);
+  border:1px solid rgba(56,189,248,.35);
+  color:#7dd3fc;
+  margin-bottom:24px;
+  font-weight:700;
+}
+
+.hero h1{
+  font-size:68px;
+  line-height:1.05;
+  margin-bottom:22px;
+}
+
+.hero h1 span{
+  color:#38bdf8;
+  text-shadow:0 0 35px rgba(56,189,248,.9);
+}
+
+.hero p{
+  font-size:20px;
+  line-height:1.75;
+  color:#e0f2fe;
+  margin-bottom:34px;
+}
+
+.buttons{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  padding:15px 32px;
+  border-radius:40px;
+  border:none;
+  background:#38bdf8;
+  color:#020617;
+  text-decoration:none;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 0 35px rgba(56,189,248,.45);
+  transition:.3s;
+  position:relative;
+  overflow:hidden;
+  font-size:16px;
+  display:inline-block;
+}
+
+.btn::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-120%;
+  width:70%;
+  height:100%;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.7),transparent);
+  transform:skewX(-25deg);
+  transition:.7s;
+}
+
+.btn:hover::before{
+  left:130%;
+}
+
+.btn:hover{
+  transform:translateY(-6px) scale(1.03);
+  box-shadow:0 0 55px rgba(56,189,248,.75);
+}
+
+.btn-outline{
+  background:rgba(255,255,255,.08);
+  color:white;
+  border:1px solid rgba(255,255,255,.2);
+}
+
+section{
+  padding:90px 8%;
+  position:relative;
+}
+
+.title{
+  font-size:42px;
+  text-align:center;
+  margin-bottom:16px;
+}
+
+.title span{
+  color:#38bdf8;
+  text-shadow:0 0 25px rgba(56,189,248,.45);
+}
+
+.subtitle{
+  max-width:760px;
+  margin:0 auto 50px;
+  text-align:center;
+  color:#cbd5e1;
+  line-height:1.7;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:24px;
+}
+
+.card{
+  padding:30px;
+  border-radius:26px;
+  background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.15);
+  backdrop-filter:blur(16px);
+  box-shadow:0 20px 55px rgba(0,0,0,.24);
+  transition:.45s;
+  position:relative;
+  overflow:hidden;
+  transform-style:preserve-3d;
+}
+
+.card::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background:linear-gradient(45deg,#38bdf8,#7c3aed,#06b6d4,#38bdf8);
+  background-size:400%;
+  animation:borderMove 8s linear infinite;
+  z-index:-1;
+  border-radius:28px;
+  opacity:.22;
+}
+
+@keyframes borderMove{
+  0%{background-position:0%;}
+  100%{background-position:400%;}
+}
+
+.card:hover{
+  transform:perspective(900px) rotateX(7deg) rotateY(-7deg) translateY(-16px) scale(1.03);
+  border-color:#38bdf8;
+  box-shadow:0 0 45px rgba(56,189,248,.28);
+}
+
+.card h3{
+  color:#38bdf8;
+  margin-bottom:12px;
+  font-size:22px;
+}
+
+.card p{
+  color:#dbeafe;
+  line-height:1.65;
+}
+
+.icon{
+  width:56px;
+  height:56px;
+  border-radius:18px;
+  margin-bottom:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#020617;
+  background:linear-gradient(135deg,#38bdf8,#7c3aed);
+  font-size:26px;
+  font-weight:900;
+  box-shadow:0 0 30px rgba(56,189,248,.35);
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:22px;
+  padding-top:80px;
+}
+
+.stat{
+  text-align:center;
+  padding:28px;
+  border-radius:24px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
+  transition:.4s;
+  backdrop-filter:blur(14px);
+}
+
+.stat:hover{
+  transform:translateY(-12px);
+  box-shadow:0 0 35px rgba(56,189,248,.25);
+  border-color:#38bdf8;
+}
+
+.stat h2{
+  color:#38bdf8;
+  font-size:38px;
+}
+
+.stat p{
+  color:#cbd5e1;
+  margin-top:8px;
+}
+
+.about{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:36px;
+  align-items:center;
+}
+
+.about-box{
+  padding:36px;
+  border-radius:30px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.15);
+  backdrop-filter:blur(16px);
+}
+
+.about-box h3{
+  color:#38bdf8;
+  font-size:30px;
+  margin-bottom:15px;
+}
+
+.about-box p{
+  color:#dbeafe;
+  line-height:1.8;
+  margin-bottom:18px;
+}
+
+.about-list{
+  display:grid;
+  gap:13px;
+}
+
+.about-list div{
+  padding:14px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  color:#e0f2fe;
+  transition:.35s;
+}
+
+.about-list div:hover{
+  transform:translateX(12px);
+  border-color:#38bdf8;
+}
+
+.about-img{
+  height:420px;
+  border-radius:30px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.15);
+  box-shadow:0 25px 70px rgba(0,0,0,.35);
+}
+
+.about-img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:.6s;
+}
+
+.about-img:hover img{
+  transform:scale(1.13);
+}
+
+.timeline{
+  max-width:920px;
+  margin:auto;
+  display:grid;
+  gap:24px;
+  position:relative;
+}
+
+.timeline::before{
+  content:"";
+  position:absolute;
+  left:60px;
+  top:0;
+  bottom:0;
+  width:2px;
+  background:linear-gradient(#38bdf8,transparent);
+}
+
+.timeline-item{
+  display:grid;
+  grid-template-columns:130px 1fr;
+  gap:20px;
+  padding:26px;
+  border-radius:22px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
+  transition:.35s;
+  position:relative;
+  backdrop-filter:blur(14px);
+}
+
+.timeline-item:hover{
+  transform:translateX(14px);
+  border-color:#38bdf8;
+  box-shadow:0 0 35px rgba(56,189,248,.25);
+}
+
+.time{
+  color:#38bdf8;
+  font-weight:900;
+}
+
+.timeline-item h3{
+  margin-bottom:8px;
+}
+
+.timeline-item p{
+  color:#cbd5e1;
+  line-height:1.65;
+}
+
+.mentor{
+  text-align:center;
+}
+
+.mentor-number{
+  width:95px;
+  height:95px;
+  border-radius:24px;
+  margin:0 auto 18px;
+  background:linear-gradient(135deg,#38bdf8,#7c3aed);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:32px;
+  font-weight:900;
+  box-shadow:0 0 35px rgba(56,189,248,.45);
+}
+
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:24px;
+}
+
+.gallery-card{
+  height:270px;
+  position:relative;
+  border-radius:26px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 25px 60px rgba(0,0,0,.35);
+  transition:.4s;
+  cursor:pointer;
+}
+
+.gallery-card:hover{
+  transform:translateY(-14px);
+  box-shadow:0 0 45px rgba(56,189,248,.28);
+  border-color:#38bdf8;
+}
+
+.gallery-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:.6s;
+}
+
+.gallery-card:hover img{
+  transform:scale(1.14);
+}
+
+.gallery-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.88),transparent);
+}
+
+.gallery-content{
+  position:absolute;
+  left:20px;
+  bottom:20px;
+  z-index:2;
+  padding:14px 16px;
+  border-radius:18px;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.16);
+  backdrop-filter:blur(12px);
+}
+
+.gallery-content h3{
+  margin-bottom:8px;
+}
+
+.gallery-content p{
+  color:#dbeafe;
+  font-size:14px;
+}
+
+.faq{
+  max-width:900px;
+  margin:auto;
+  display:grid;
+  gap:18px;
+}
+
+.faq-item{
+  border-radius:18px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
+  overflow:hidden;
+  transition:.35s;
+}
+
+.faq-item:hover{
+  border-color:#38bdf8;
+}
+
+.faq-q{
+  padding:20px;
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.faq-a{
+  max-height:0;
+  overflow:hidden;
+  color:#cbd5e1;
+  line-height:1.7;
+  padding:0 20px;
+  transition:.35s;
+}
+
+.faq-item.active .faq-a{
+  max-height:180px;
+  padding:0 20px 20px;
+}
+
+.contact-box{
+  max-width:780px;
+  margin:auto;
+  padding:36px;
+  border-radius:28px;
+  text-align:center;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.15);
+  transition:.35s;
+  backdrop-filter:blur(16px);
+}
+
+.contact-box:hover{
+  border-color:#38bdf8;
+  box-shadow:0 0 35px rgba(56,189,248,.25);
+}
+
+.contact-box p{
+  margin:13px 0;
+  color:#dbeafe;
+}
+
+.register{
+  text-align:center;
+  background:linear-gradient(135deg,rgba(14,165,233,.12),rgba(124,58,237,.12));
+}
+
+.register p{
+  color:#cbd5e1;
+  margin-bottom:28px;
+}
+
+footer{
+  padding:30px 8%;
+  text-align:center;
+  color:#94a3b8;
+  border-top:1px solid rgba(255,255,255,.1);
+}
+
+.popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.75);
+  backdrop-filter:blur(14px);
+  z-index:15000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:.35s;
+}
+
+.popup.active{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.popup-box{
+  width:90%;
+  max-width:540px;
+  padding:38px;
+  border-radius:30px;
+  text-align:center;
+  background:
+    radial-gradient(circle at top left,rgba(0,180,255,.35),transparent 38%),
+    linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.06));
+  border:1px solid rgba(255,255,255,.22);
+  box-shadow:0 0 70px rgba(56,189,248,.28);
+  position:relative;
+  animation:popupFloat .45s ease;
+  overflow:hidden;
+}
+
+@keyframes popupFloat{
+  from{transform:scale(.7) translateY(60px);opacity:0;}
+  to{transform:scale(1) translateY(0);opacity:1;}
+}
+
+.close{
+  position:absolute;
+  top:15px;
+  right:18px;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  border:none;
+  background:rgba(255,255,255,.12);
+  color:white;
+  font-size:24px;
+  cursor:pointer;
+  z-index:2;
+}
+
+.popup-icon{
+  width:90px;
+  height:90px;
+  margin:0 auto 20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  font-size:36px;
+  font-weight:900;
+  color:#020617;
+  background:linear-gradient(135deg,#38bdf8,#7c3aed);
+  box-shadow:0 0 38px rgba(56,189,248,.6);
+  animation:popFloat 3s infinite ease-in-out;
+}
+
+@keyframes popFloat{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-12px);}
+}
+
+.popup-box h2{
+  color:#38bdf8;
+  margin-bottom:12px;
+}
+
+.popup-box p{
+  color:#dbeafe;
+  line-height:1.7;
+  margin-bottom:20px;
+}
+
+.popup-details{
+  display:grid;
+  gap:12px;
+  margin-bottom:24px;
+}
+
+.popup-details span{
+  padding:13px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  color:#e0f2fe;
+}
+
+.backtop{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  width:45px;
+  height:45px;
+  border:none;
+  border-radius:50%;
+  background:#38bdf8;
+  color:#020617;
+  font-size:22px;
+  font-weight:900;
+  cursor:pointer;
+  display:none;
+  z-index:8000;
+  box-shadow:0 0 30px rgba(56,189,248,.5);
+}
+
+.backtop.show{
+  display:block;
+}
+
+.reveal{
+  opacity:0;
+  transform:translateY(45px);
+  transition:1s;
+}
+
+.reveal.active{
+  opacity:1;
+  transform:translateY(0);
+}
+
+@media(max-width:900px){
+  .about{grid-template-columns:1fr;}
+  .hero h1{font-size:50px;}
+}
+
+@media(max-width:768px){
+  nav{padding:14px 5%;}
+  .menu{display:block;}
+
+  nav ul{
+    position:absolute;
+    top:75px;
+    left:5%;
+    right:5%;
+    display:none;
+    flex-direction:column;
+    padding:22px;
+    border-radius:22px;
+    background:#020617;
+    border:1px solid rgba(255,255,255,.15);
+  }
+
+  nav ul.active{display:flex;}
+  .logo span{display:none;}
+
+  section{padding:75px 6%;}
+  .hero{padding:135px 6% 75px;}
+  .hero-content{padding:28px;}
+  .hero h1{font-size:42px;}
+  .hero p{font-size:17px;}
+  .title{font-size:32px;}
+
+  .timeline::before{display:none;}
+  .timeline-item{grid-template-columns:1fr;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="loader">
+  <h1>IEEE UI/UX</h1>
+</div>
+
+<div class="progress" id="progress"></div>
+<div class="spotlight" id="spotlight"></div>
+<div class="sparkles" id="sparkles"></div>
+
+<div class="shape s1"></div>
+<div class="shape s2"></div>
+<div class="shape s3"></div>
+<div class="shape s4"></div>
+
+<nav>
+  <div class="logo">
+    <img src="https://2020.ieee-spce.org/sites/spce20/files/styles/large/public/images/logos/ieee_mb_black_transparent_web.png" alt="IEEE Logo">
+    <span>IEEE UI/UX Workshop</span>
+  </div>
+
+  <button class="menu" onclick="toggleMenu()">☰</button>
+
+  <ul id="navLinks">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#learn">Learn</a></li>
+    <li><a href="#schedule">Schedule</a></li>
+    <li><a href="#mentors">Mentors</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#register">Register</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="home">
+  <div class="hero-dark"></div>
+  <div class="torch-light"></div>
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+
+  <div class="hero-content">
+    <div class="badge">IEEE Student Branch Presents</div>
+
+    <h1>UI/UX Design <span>Workshop</span></h1>
+
+    <p>
+      A professional hands-on workshop designed to introduce students to modern interface design,
+      user experience principles, wireframing, prototyping, and product design workflows.
+    </p>
+
+    <div class="buttons">
+      <button class="btn" onclick="openPopup()">Register Now</button>
+      <a href="#overview" class="btn btn-outline">View Details</a>
+    </div>
+  </div>
+</section>
+
+<section class="stats reveal">
+  <div class="stat">
+    <h2>2</h2>
+    <p>Workshop Days</p>
+  </div>
+  <div class="stat">
+    <h2>4+</h2>
+    <p>Learning Sessions</p>
+  </div>
+  <div class="stat">
+    <h2>100%</h2>
+    <p>Beginner Friendly</p>
+  </div>
+  <div class="stat">
+    <h2>1</h2>
+    <p>Final Prototype</p>
+  </div>
+</section>
+
+<section id="overview" class="reveal">
+  <h2 class="title">Workshop <span>Overview</span></h2>
+  <p class="subtitle">
+    This workshop helps students understand how digital products are planned,
+    designed, tested, and presented before development.
+  </p>
+
+  <div class="about">
+    <div class="about-box">
+      <h3>Design With Purpose</h3>
+      <p>
+        Participants will learn how to create clean, useful, and user-friendly interfaces.
+        The workshop focuses on practical design thinking, user flow planning, and prototype creation.
+      </p>
+
+      <div class="about-list">
+        <div>Professional design workflow</div>
+        <div>Hands-on wireframing practice</div>
+        <div>Prototype creation and presentation</div>
+        <div>Useful for resume, portfolio, and LinkedIn</div>
+      </div>
+    </div>
+
+    <div class="about-img">
+      <img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=1200" alt="Design Process">
+    </div>
+  </div>
+</section>
+
+<section id="learn" class="reveal">
+  <h2 class="title">What You Will <span>Learn</span></h2>
+  <p class="subtitle">
+    A structured learning experience for students interested in design, development, and digital products.
+  </p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="icon">UI</div>
+      <h3>Interface Design</h3>
+      <p>Learn visual hierarchy, layout structure, spacing, alignment, color usage, and typography.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">UX</div>
+      <h3>User Experience</h3>
+      <p>Understand user needs, usability, user journeys, information flow, and design decisions.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">WF</div>
+      <h3>Wireframing</h3>
+      <p>Create low-fidelity layouts to plan screens, sections, and user interactions clearly.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">PT</div>
+      <h3>Prototyping</h3>
+      <p>Build interactive prototypes that demonstrate product flow and user actions.</p>
+    </div>
+  </div>
+</section>
+
+<section id="schedule" class="reveal">
+  <h2 class="title">Workshop <span>Schedule</span></h2>
+  <p class="subtitle">A focused two-day structure for learning and practical implementation.</p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="time">Day 1</div>
+      <div>
+        <h3>Introduction to UI/UX</h3>
+        <p>Basic concepts of user interface design, user experience, product thinking, and design process.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time">Day 1</div>
+      <div>
+        <h3>Design Principles and Wireframes</h3>
+        <p>Learn layout, typography, color, spacing, and create simple wireframes for an application.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time">Day 2</div>
+      <div>
+        <h3>Prototype Development</h3>
+        <p>Create a modern interface and convert it into a clickable prototype.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="time">Day 2</div>
+      <div>
+        <h3>Review and Showcase</h3>
+        <p>Improve the final design, review usability, and present the completed prototype.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="mentors" class="reveal">
+  <h2 class="title">Workshop <span>Mentors</span></h2>
+  <p class="subtitle">
+    Learn with guidance from experienced coordinators and design-focused mentors.
+  </p>
+
+  <div class="grid">
+    <div class="card mentor">
+      <div class="mentor-number">01</div>
+      <h3>Design Mentor</h3>
+      <p>Guides participants through interface design, user flow, wireframing, and prototype refinement.</p>
+    </div>
+
+    <div class="card mentor">
+      <div class="mentor-number">02</div>
+      <h3>Technical Coordinator</h3>
+      <p>Manages technical setup, participant support, registration assistance, and event coordination.</p>
+    </div>
+
+    <div class="card mentor">
+      <div class="mentor-number">03</div>
+      <h3>IEEE Organizing Team</h3>
+      <p>Handles planning, workshop execution, student support, documentation, and final showcase activities.</p>
+    </div>
+  </div>
+</section>
+
+<section class="reveal">
+  <h2 class="title">Workshop <span>Highlights</span></h2>
+  <p class="subtitle">A practical and professional learning experience for students.</p>
+
+  <div class="gallery">
+    <div class="gallery-card">
+      <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200" alt="Interactive Design">
+      <div class="gallery-content">
+        <h3>Interactive Sessions</h3>
+        <p>Learn through guided practical tasks.</p>
+      </div>
+    </div>
+
+    <div class="gallery-card">
+      <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200" alt="Team Work">
+      <div class="gallery-content">
+        <h3>Student Collaboration</h3>
+        <p>Work with peers and share ideas.</p>
+      </div>
+    </div>
+
+    <div class="gallery-card">
+      <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200" alt="Project Work">
+      <div class="gallery-content">
+        <h3>Final Prototype</h3>
+        <p>Create a portfolio-ready design output.</p>
+      </div>
+    </div>
+
+    <div class="gallery-card">
+      <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?w=1200" alt="Wireframing">
+      <div class="gallery-content">
+        <h3>Wireframing Practice</h3>
+        <p>Plan layouts, user flows, and screen structures.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reveal">
+  <h2 class="title">Frequently Asked <span>Questions</span></h2>
+
+  <div class="faq">
+    <div class="faq-item">
+      <div class="faq-q">Is this workshop beginner friendly? <span>+</span></div>
+      <div class="faq-a">Yes. The workshop starts from the basics and is suitable for students with no previous UI/UX experience.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Do I need coding knowledge? <span>+</span></div>
+      <div class="faq-a">No. This workshop focuses on design thinking, wireframing, and prototyping.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Will there be practical work? <span>+</span></div>
+      <div class="faq-a">Yes. Participants will create a simple prototype during the workshop.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">How can I register? <span>+</span></div>
+      <div class="faq-a">Click the Register Now button and replace the Google Form link in the code with your real form link.</div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="reveal">
+  <h2 class="title">Contact <span>Us</span></h2>
+
+  <div class="contact-box">
+    <p><b>Venue:</b> John Cox Memorial CSI Institute of Technology</p>
+    <p><b>Date:</b> 24 & 25</p>
+    <p><b>Organized By:</b> IEEE Student Branch</p>
+    <p><b>Email:</b> ieeejcmcsiit@gmail.com</p>
+    <p><b>Phone:</b> +91 00000 00000</p>
+  </div>
+</section>
+
+<section class="register reveal" id="register">
+  <h2 class="title">Register <span>Now</span></h2>
+  <p>Secure your seat for the IEEE UI/UX Design Workshop.</p>
+  <button class="btn" onclick="openPopup()">Open Registration</button>
+</section>
+
+<footer>
+  © 2026 IEEE Student Branch | UI/UX Design Workshop
+</footer>
+
+<div class="popup" id="popup">
+  <div class="popup-box">
+    <button class="close" onclick="closePopup()">×</button>
+
+    <div class="popup-icon">UX</div>
+
+    <h2>IEEE UI/UX Design Workshop</h2>
+    <p>Register now and take your first step into professional interface and experience design.</p>
+
+    <div class="popup-details">
+      <span><b>Date:</b> 24 & 25</span>
+      <span><b>Venue:</b> John Cox Memorial CSI Institute of Technology</span>
+      <span><b>Organizer:</b> IEEE Student Branch</span>
+      <span><b>Topic:</b> Interface Design, UX Flow, Wireframing, Prototyping</span>
+    </div>
+
+    <a href="YOUR_GOOGLE_FORM_LINK_HERE" target="_blank" class="btn">Continue to Registration</a>
+  </div>
+</div>
+
+<button class="backtop" id="backtop" onclick="topScroll()">↑</button>
+
+<script>
+const navLinks = document.getElementById("navLinks");
+const progress = document.getElementById("progress");
+const backtop = document.getElementById("backtop");
+const spotlight = document.getElementById("spotlight");
+const torch = document.querySelector(".torch-light");
+const hero = document.querySelector(".hero");
+const sparkleBox = document.getElementById("sparkles");
+
+function toggleMenu(){
+  navLinks.classList.toggle("active");
+}
+
+document.querySelectorAll("nav a").forEach(link=>{
+  link.addEventListener("click",()=>{
+    navLinks.classList.remove("active");
+  });
+});
+
+function openPopup(){
+  document.getElementById("popup").classList.add("active");
+}
+
+function closePopup(){
+  document.getElementById("popup").classList.remove("active");
+}
+
+document.getElementById("popup").addEventListener("click",function(e){
+  if(e.target.id==="popup"){
+    closePopup();
+  }
+});
+
+window.addEventListener("scroll",()=>{
+  const top = document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  progress.style.width = (top / height) * 100 + "%";
+
+  document.querySelectorAll(".reveal").forEach(item=>{
+    const itemTop = item.getBoundingClientRect().top;
+    if(itemTop < window.innerHeight - 110){
+      item.classList.add("active");
+    }
+  });
+
+  if(window.scrollY > 400){
+    backtop.classList.add("show");
+  }else{
+    backtop.classList.remove("show");
+  }
+});
+
+document.querySelectorAll(".faq-q").forEach(q=>{
+  q.addEventListener("click",()=>{
+    const item = q.parentElement;
+    item.classList.toggle("active");
+    q.querySelector("span").textContent = item.classList.contains("active") ? "−" : "+";
+  });
+});
+
+function topScroll(){
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+}
+
+window.addEventListener("mousemove",e=>{
+  spotlight.style.left = e.clientX - 230 + "px";
+  spotlight.style.top = e.clientY - 230 + "px";
+
+  const x = e.clientX / window.innerWidth - .5;
+  const y = e.clientY / window.innerHeight - .5;
+
+  document.querySelectorAll(".shape").forEach(el=>{
+    el.style.transform = `translate(${x * 70}px,${y * 70}px)`;
+  });
+});
+
+hero.addEventListener("mousemove",function(e){
+  const rect = hero.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  torch.style.setProperty("--x", x + "px");
+  torch.style.setProperty("--y", y + "px");
+});
+
+hero.addEventListener("mouseleave",function(){
+  torch.style.setProperty("--x", "50%");
+  torch.style.setProperty("--y", "50%");
+});
+
+document.querySelectorAll(".btn").forEach(btn=>{
+  btn.addEventListener("mousemove",e=>{
+    const r = btn.getBoundingClientRect();
+    const x = e.clientX - r.left - r.width / 2;
+    const y = e.clientY - r.top - r.height / 2;
+    btn.style.transform = `translate(${x * .16}px,${y * .16}px)`;
+  });
+
+  btn.addEventListener("mouseleave",()=>{
+    btn.style.transform = "";
+  });
+});
+
+document.querySelectorAll(".card, .gallery-card").forEach(card=>{
+  card.addEventListener("mousemove",function(e){
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const rotateX = ((y / rect.height) - 0.5) * -12;
+    const rotateY = ((x / rect.width) - 0.5) * 12;
+
+    card.style.transform = `translateY(-12px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  });
+
+  card.addEventListener("mouseleave",function(){
+    card.style.transform = "";
+  });
+});
+
+for(let i = 0; i < 90; i++){
+  const sparkle = document.createElement("span");
+  sparkle.style.left = Math.random() * 100 + "%";
+  sparkle.style.animationDelay = Math.random() * 6 + "s";
+  sparkle.style.animationDuration = 4 + Math.random() * 5 + "s";
+  sparkle.style.opacity = Math.random();
+  sparkle.style.width = 2 + Math.random() * 4 + "px";
+  sparkle.style.height = sparkle.style.width;
+  sparkleBox.appendChild(sparkle);
+}
+
+window.dispatchEvent(new Event("scroll"));
+</script>
+
+</body>
+</html>
